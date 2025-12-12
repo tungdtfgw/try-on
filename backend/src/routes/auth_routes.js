@@ -5,7 +5,7 @@ import { validateRegister } from '../middlewares/validation_middleware.js';
 const router = express.Router();
 
 /**
- * POST /api/auth/register
+ * POST /api/v1/auth/register
  * Đăng ký tài khoản mới
  * Body: { email, password }
  */

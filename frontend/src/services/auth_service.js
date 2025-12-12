@@ -7,7 +7,7 @@ import apiClient from './api.js';
  * @returns {Promise<Object>} Response data
  */
 export const register = async (email, password) => {
-  const response = await apiClient.post('/api/auth/register', {
+  const response = await apiClient.post('/auth/register', {
     email,
     password,
   });

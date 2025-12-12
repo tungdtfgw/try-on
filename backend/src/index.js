@@ -43,7 +43,7 @@ app.get('/health', (req, res) => {
 
 // API routes
 import authRoutes from './routes/auth_routes.js';
-app.use('/api/auth', authRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);
