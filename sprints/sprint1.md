@@ -6,15 +6,15 @@ User Stories: US-01, US-02
 ### 1. Thiết lập Project (Priority: High)
 **Mô tả:** Khởi tạo và cấu hình project
 **Công việc:**
-- [ ] Khởi tạo project backend với NodeJS/ExpressJS
-- [ ] Cấu hình ESLint, Prettier cho backend
-- [ ] Khởi tạo project frontend với ReactJS/Vite
-- [ ] Cấu hình ESLint, Prettier cho frontend
-- [ ] Cấu hình JWT cho authentication
-- [ ] Setup environment variables (.env.example)
-- [ ] Tạo cấu trúc thư mục cho cả frontend và backend
-- [ ] Setup CORS cho API
-- [ ] Tạo file README với hướng dẫn setup & run project
+- [x] Khởi tạo project backend với NodeJS/ExpressJS
+- [x] Cấu hình ESLint, Prettier cho backend
+- [x] Khởi tạo project frontend với ReactJS/Vite
+- [x] Cấu hình ESLint, Prettier cho frontend
+- [x] Cấu hình JWT cho authentication
+- [x] Setup environment variables (.env.example)
+- [x] Tạo cấu trúc thư mục cho cả frontend và backend
+- [x] Setup CORS cho API
+- [x] Tạo file README với hướng dẫn setup & run project
 
 **Acceptance Criteria:**
 - Project chạy được trên local
@@ -27,13 +27,13 @@ User Stories: US-01, US-02
 **Mô tả:** Xây dựng trang landing page cho ứng dụng
 
 **Công việc:**
-- [ ] Thiết kế layout landing page
-- [ ] Tạo header với logo và navigation
-- [ ] Tạo hero section
-- [ ] Tạo features section
-- [ ] Tạo footer
-- [ ] Responsive design cho mobile và tablet
-- [ ] Thêm routing cho landing page
+- [x] Thiết kế layout landing page
+- [x] Tạo header với logo và navigation
+- [x] Tạo hero section
+- [x] Tạo features section
+- [x] Tạo footer
+- [x] Responsive design cho mobile và tablet
+- [x] Thêm routing cho landing page
 
 **Acceptance Criteria:**
 - Landing page hiển thị đầy đủ các sections

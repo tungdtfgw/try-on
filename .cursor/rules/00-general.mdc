@@ -9,6 +9,16 @@ alwaysApply: true
 README.md: project documentation.
 .gitignore: git ignore file.
 sprints/: user stories and sprint backlog (US-01.md, US-02.md, sprint1.md, PB.md).
+backend/: Backend API (Node.js + Express).
+  - src/: source code (controllers, services, repositories, middlewares, config, routes, utils).
+  - .env.example: environment variables template.
+frontend/: Frontend application (React + Vite + TailwindCSS).
+  - src/: source code (components, pages, services, hooks, utils, features).
+    - components/: reusable UI components (layout, common components).
+      - layout/: layout components (Header, Footer, etc.).
+    - pages/: page components (LandingPage, etc.).
+    - utils/: utility functions.
+  - .env.example: environment variables template.
 
 => Always use the structure above to understand the project when writing code. 
 => When creating new files or folders, place them in the appropriate location according to this structure. 
