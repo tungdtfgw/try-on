@@ -9,6 +9,8 @@ alwaysApply: true
 README.md: project documentation.
 .gitignore: git ignore file.
 sprints/: user stories and sprint backlog (US-01.md, US-02.md, sprint1.md, PB.md).
+design/: database schema và thiết kế hệ thống (database-schema.md).
+migrations/: SQL migration scripts cho Supabase.
 backend/: Backend API (Node.js + Express).
   - src/: source code (controllers, services, repositories, middlewares, config, routes, utils).
   - .env.example: environment variables template.
@@ -33,4 +35,4 @@ Keep in mind that the project is built with the following tech stack:
   - Do not use Prisma, use Supabase directly for schema and CRUD.
   - Do not use the default Users table of Supabase, create a `profiles` table.
 # Humor
-- Include a dad joke in every reply to the user.
+- Include an English dad joke in every reply to the user. The joke could be related to the current task or the project but could be other topics as well.
