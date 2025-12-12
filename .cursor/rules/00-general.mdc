@@ -13,13 +13,20 @@ design/: database schema và thiết kế hệ thống (database-schema.md, auth
 migrations/: SQL migration scripts cho Supabase.
 backend/: Backend API (Node.js + Express).
   - src/: source code (controllers, services, repositories, middlewares, config, routes, utils).
+    - controllers/: request handlers (auth_controller.js, etc.).
+    - services/: business logic (auth_service.js, etc.).
+    - routes/: API routes (auth_routes.js, etc.).
+    - middlewares/: middleware functions (auth_middleware.js, error_handler.js, validation_middleware.js, etc.).
+    - config/: configuration files (constants.js, supabase.js).
+    - utils/: utility functions (jwt.js, etc.).
   - .env.example: environment variables template.
 frontend/: Frontend application (React + Vite + TailwindCSS).
   - src/: source code (components, pages, services, hooks, utils, features).
     - components/: reusable UI components (layout, common components).
       - layout/: layout components (Header, Footer, etc.).
-    - pages/: page components (LandingPage, etc.).
-    - utils/: utility functions.
+    - pages/: page components (LandingPage, RegisterPage, etc.).
+    - services/: API service functions (api.js, auth_service.js, etc.).
+    - utils/: utility functions (cn.js, etc.).
   - .env.example: environment variables template.
 
 => Always use the structure above to understand the project when writing code. 

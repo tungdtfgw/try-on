@@ -38,3 +38,84 @@ TailwindCSS v4 changed its architecture. The PostCSS plugin is now in a separate
 **Prevention:**
 - When upgrading to TailwindCSS v4, always check for breaking changes in PostCSS configuration
 - Review TailwindCSS migration guide before upgrading major versions
+
+---
+
+## Supabase Database Errors
+
+### Database Error Saving New User (Trigger Function)
+
+**Error Message:**
+```
+Database error saving new user
+AuthApiError: Database error saving new user
+```
+
+**Root Cause:**
+The trigger function `handle_new_user()` that auto-creates profiles when a user signs up is failing due to:
+1. Row Level Security (RLS) policies blocking the insert
+2. Missing `SET search_path = public` in function definition
+3. Function not properly configured with `SECURITY DEFINER`
+
+**Solution:**
+1. Update the function to include proper configuration:
+   ```sql
+   CREATE OR REPLACE FUNCTION public.handle_new_user()
+   RETURNS TRIGGER
+   SECURITY DEFINER
+   SET search_path = public
+   LANGUAGE plpgsql
+   AS $$
+   BEGIN
+       INSERT INTO public.profiles (id, email)
+       VALUES (NEW.id, NEW.email)
+       ON CONFLICT (id) DO NOTHING;
+       RETURN NEW;
+   EXCEPTION
+       WHEN others THEN
+           RAISE WARNING 'Error creating profile for user %: %', NEW.id, SQLERRM;
+           RETURN NEW;
+   END;
+   $$;
+   ```
+
+2. Grant execute permissions:
+   ```sql
+   GRANT EXECUTE ON FUNCTION public.handle_new_user() TO authenticated;
+   GRANT EXECUTE ON FUNCTION public.handle_new_user() TO anon;
+   GRANT EXECUTE ON FUNCTION public.handle_new_user() TO service_role;
+   ```
+
+**Prevention:**
+- Always use `SECURITY DEFINER` and `SET search_path = public` for trigger functions that need to bypass RLS
+- Add exception handling in trigger functions to prevent user creation from failing
+- Test trigger functions after creating them
+
+---
+
+### Migration Policy Already Exists Error
+
+**Error Message:**
+```
+ERROR: 42710: policy "profiles_select_own" for table "profiles" already exists
+```
+
+**Root Cause:**
+Running migrations multiple times without checking if policies/triggers already exist.
+
+**Solution:**
+Make migrations idempotent by adding `DROP IF EXISTS` before creating:
+```sql
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS profiles_select_own ON public.profiles;
+DROP POLICY IF EXISTS profiles_insert_own ON public.profiles;
+DROP POLICY IF EXISTS profiles_update_own ON public.profiles;
+
+-- Then create policies
+CREATE POLICY profiles_select_own ON public.profiles...
+```
+
+**Prevention:**
+- Always use `DROP IF EXISTS` before creating policies, triggers, or indexes in migrations
+- Use `CREATE OR REPLACE` for functions
+- Test migrations by running them multiple times

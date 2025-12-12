@@ -41,8 +41,9 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
-// API routes will be added here
-// app.use('/api/v1', routes);
+// API routes
+import authRoutes from './routes/auth_routes.js';
+app.use('/api/auth', authRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);

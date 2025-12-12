@@ -47,11 +47,11 @@ User Stories: US-01, US-02
 **Mô tả:** Thiết kế schema cho sprint 1 (auth/profile)
 
 **Công việc:**
-- [ ] Xác định bảng cho các tính năng trong sprint 1 và các cột cần thiết
-- [ ] Thiết lập indexes và constraints
-- [ ] Viết script/migration SQL trên Supabase
-- [ ] Thiết kế storage cho các tính năng trong sprint 1 trên Supabase
-- [ ] Thiết kế script/migration cho storage
+- [x] Xác định bảng cho các tính năng trong sprint 1 và các cột cần thiết
+- [x] Thiết lập indexes và constraints
+- [x] Viết script/migration SQL trên Supabase
+- [x] Thiết kế storage cho các tính năng trong sprint 1 trên Supabase
+- [x] Thiết kế script/migration cho storage
 
 **Acceptance Criteria:**
 - Schema `profiles` được tạo trên Supabase, có unique email
@@ -65,11 +65,11 @@ User Stories: US-01, US-02
 **Mô tả:** Xác định luồng auth/profile cho sprint 1
 
 **Công việc:**
-- [ ] Phác thảo flow đăng ký (register)
-- [ ] Phác thảo flow đăng nhập (login + JWT)
-- [ ] Phác thảo flow lấy/cập nhật profile và upload avatar (Storage)
-- [ ] Phác thảo flow logout và bảo vệ routes
-- [ ] Lưu lại sơ đồ/ngắn gọn trong thư mục thiết kế
+- [x] Phác thảo flow đăng ký (register)
+- [x] Phác thảo flow đăng nhập (login + JWT)
+- [x] Phác thảo flow lấy/cập nhật profile và upload avatar (Storage)
+- [x] Phác thảo flow logout và bảo vệ routes
+- [x] Lưu lại sơ đồ/ngắn gọn trong thư mục thiết kế
 
 **Acceptance Criteria:**
 - Có tài liệu flow rõ ràng cho register, login, profile (get/update), upload avatar, logout
@@ -81,20 +81,22 @@ User Stories: US-01, US-02
 **Mô tả:** Xây dựng chức năng đăng ký tài khoản mới dựa trên flow đã chốt
 
 **Công việc:**
-- [ ] Tạo API endpoint đăng ký (POST /api/auth/register)
-- [ ] Validate dữ liệu đầu vào (email, password, etc.)
-- [ ] Hash password trước khi lưu
-- [ ] Tạo UI form đăng ký
-- [ ] Kết nối frontend với API đăng ký
-- [ ] Xử lý error và success messages
-- [ ] Email validation và unique check
+- [x] Tạo API endpoint đăng ký (POST /api/auth/register)
+- [x] Validate dữ liệu đầu vào (email, password, etc.)
+- [x] Hash password trước khi lưu (Supabase Auth tự động hash)
+- [x] Tạo UI form đăng ký
+- [x] Kết nối frontend với API đăng ký
+- [x] Xử lý error và success messages
+- [x] Email validation và unique check
+- [x] Fix trigger function để auto-create profile
 
 **Acceptance Criteria:**
 - User có thể đăng ký tài khoản mới
-- Password được hash an toàn
+- Password được hash an toàn (qua Supabase Auth)
 - Validation hoạt động đúng
 - Error handling đầy đủ
 - Không cho phép email trùng lặp
+- Profile tự động được tạo khi đăng ký thành công
 
 ---
 
