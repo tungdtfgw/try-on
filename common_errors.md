@@ -119,3 +119,78 @@ CREATE POLICY profiles_select_own ON public.profiles...
 - Always use `DROP IF EXISTS` before creating policies, triggers, or indexes in migrations
 - Use `CREATE OR REPLACE` for functions
 - Test migrations by running them multiple times
+
+---
+
+### Migration Error: Relation Does Not Exist
+
+**Error Message:**
+```
+ERROR: 42P01: relation "public.profiles" does not exist
+```
+
+**Root Cause:**
+Migration script tries to DROP triggers or functions on a table that doesn't exist yet. The order of DROP statements matters.
+
+**Solution:**
+1. Drop the table first (with CASCADE to remove all dependencies):
+   ```sql
+   DROP TABLE IF EXISTS public.profiles CASCADE;
+   ```
+
+2. Then drop functions (if they still exist):
+   ```sql
+   DROP FUNCTION IF EXISTS public.handle_updated_at();
+   ```
+
+3. Create the table and dependencies:
+   ```sql
+   CREATE TABLE public.profiles (...);
+   -- Then create triggers, functions, etc.
+   ```
+
+**Prevention:**
+- Always drop tables before dropping functions/triggers that depend on them
+- Use CASCADE when dropping tables to automatically remove dependencies
+- Test migration scripts on a clean database
+
+---
+
+### Using Supabase Auth Instead of Custom Profiles Table
+
+**Error Message:**
+Users being created in `auth.users` table instead of `profiles` table, violating project rules.
+
+**Root Cause:**
+Code was using `supabase.auth.signUp()` and `supabase.auth.signInWithPassword()` which creates users in Supabase's default `auth.users` table, but project rules specify not to use Supabase Auth.
+
+**Solution:**
+1. Remove all `supabase.auth.*` calls
+2. Use bcrypt to hash passwords directly:
+   ```js
+   import bcrypt from 'bcryptjs';
+   const passwordHash = await bcrypt.hash(password, 10);
+   ```
+
+3. Insert directly into `profiles` table:
+   ```js
+   const { data, error } = await supabase
+     .from('profiles')
+     .insert({
+       id: randomUUID(),
+       email: normalizedEmail,
+       password_hash: passwordHash,
+     });
+   ```
+
+4. Verify passwords with bcrypt:
+   ```js
+   const isPasswordValid = await bcrypt.compare(password, profile.password_hash);
+   ```
+
+5. Update migration to include `password_hash` column and remove foreign key to `auth.users`
+
+**Prevention:**
+- Always check project rules before implementing authentication
+- Use custom user management when project specifies not to use default auth tables
+- Test that users are created in the correct table after implementation

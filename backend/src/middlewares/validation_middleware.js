@@ -56,6 +56,29 @@ const registerSchema = z.object({
 });
 
 /**
+ * Login validation schema
+ */
+const loginSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Email là bắt buộc',
+      invalid_type_error: 'Email phải là chuỗi',
+    })
+    .min(1, 'Email không được để trống'),
+  password: z
+    .string({
+      required_error: 'Mật khẩu là bắt buộc',
+      invalid_type_error: 'Mật khẩu phải là chuỗi',
+    })
+    .min(1, 'Mật khẩu không được để trống'),
+});
+
+/**
  * Middleware: Validate register request
  */
 export const validateRegister = validate(registerSchema);
+
+/**
+ * Middleware: Validate login request
+ */
+export const validateLogin = validate(loginSchema);

@@ -24,3 +24,26 @@ export const register = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Controller: Đăng nhập
+ */
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const result = await authService.loginUser(email, password);
+
+    res.status(HTTP_STATUS.OK).json({
+      success: true,
+      message: 'Đăng nhập thành công',
+      data: {
+        token: result.token,
+        user: result.user,
+        profile: result.profile,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

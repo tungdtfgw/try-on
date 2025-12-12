@@ -83,7 +83,7 @@ User Stories: US-01, US-02
 **Công việc:**
 - [x] Tạo API endpoint đăng ký (POST /api/auth/register)
 - [x] Validate dữ liệu đầu vào (email, password, etc.)
-- [x] Hash password trước khi lưu (Supabase Auth tự động hash)
+- [x] Hash password trước khi lưu (dùng bcrypt, không dùng Supabase Auth)
 - [x] Tạo UI form đăng ký
 - [x] Kết nối frontend với API đăng ký
 - [x] Xử lý error và success messages
@@ -92,7 +92,7 @@ User Stories: US-01, US-02
 
 **Acceptance Criteria:**
 - User có thể đăng ký tài khoản mới
-- Password được hash an toàn (qua Supabase Auth)
+- Password được hash an toàn (qua bcrypt)
 - Validation hoạt động đúng
 - Error handling đầy đủ
 - Không cho phép email trùng lặp
@@ -104,15 +104,15 @@ User Stories: US-01, US-02
 **Mô tả:** Xây dựng chức năng đăng nhập
 
 **Công việc:**
-- [ ] Tạo API endpoint đăng nhập (POST /api/auth/login)
-- [ ] Verify email và password
-- [ ] Generate JWT token khi đăng nhập thành công
-- [ ] Tạo UI form đăng nhập
-- [ ] Kết nối frontend với API đăng nhập
-- [ ] Lưu JWT token (localStorage/cookie)
+- [x] Tạo API endpoint đăng nhập (POST /api/auth/login)
+- [x] Verify email và password
+- [x] Generate JWT token khi đăng nhập thành công
+- [x] Tạo UI form đăng nhập
+- [x] Kết nối frontend với API đăng nhập
+- [x] Lưu JWT token (localStorage)
 - [ ] Implement logout functionality
 - [ ] Protected routes setup
-- [ ] Xử lý error messages
+- [x] Xử lý error messages
 
 **Acceptance Criteria:**
 - User có thể đăng nhập với email/password

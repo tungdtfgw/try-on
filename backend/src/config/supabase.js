@@ -17,9 +17,11 @@ try {
   throw new Error(`Invalid SUPABASE_URL format: ${supabaseUrl}`);
 }
 
+// Supabase client chỉ dùng cho database queries, không dùng Supabase Auth
+// Authentication được xử lý bằng JWT và bảng profiles tự quản lý
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
-    autoRefreshToken: true,
-    persistSession: false, // We're using JWT, not Supabase sessions
+    persistSession: false, // Không dùng Supabase Auth
+    autoRefreshToken: false,
   },
 });
