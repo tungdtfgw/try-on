@@ -127,23 +127,28 @@ User Stories: US-01, US-02
 **Mô tả:** Cho phép user cập nhật thông tin cá nhân
 
 **Công việc:**
-- [ ] Tạo API endpoint lấy thông tin user (GET /api/user/profile)
-- [ ] Tạo API endpoint cập nhật profile (PUT /api/user/profile)
-- [ ] Implement JWT verification middleware
-- [ ] Tạo UI profile page
-- [ ] Form cập nhật thông tin (name, email, phone, etc.)
-- [ ] Upload avatar (sử dụng Supabase Storage)
-- [ ] Validate dữ liệu cập nhật
-- [ ] Xử lý upload file
-- [ ] Update UI sau khi save thành công
+- [x] Tạo API endpoint lấy thông tin user (GET /api/user/profile)
+- [x] Tạo API endpoint cập nhật profile (PUT /api/user/profile)
+- [x] Tạo API endpoint upload ảnh toàn thân (POST /api/user/profile/photo)
+- [x] Implement JWT verification middleware (đã có sẵn)
+- [x] Tạo UI profile page
+- [x] Form cập nhật thông tin (display_name, height_cm, weight_kg)
+- [x] Upload ảnh toàn thân (sử dụng Supabase Storage)
+- [x] Validate dữ liệu cập nhật (height: 100-250cm, weight: 30-250kg)
+- [x] Xử lý upload file với multer
+- [x] Update UI sau khi save thành công
+- [x] Tạo Dashboard component
+- [x] Tạo AuthenticatedHeader component cho UI thống nhất
+- [x] Tạo ProtectedRoute component
 
 **Acceptance Criteria:**
 - User có thể xem thông tin profile
-- User có thể cập nhật thông tin
-- Avatar upload hoạt động với Supabase Storage
-- Validation đầy đủ
-- Chỉ user đã login mới truy cập được
+- User có thể cập nhật thông tin (display_name, height_cm, weight_kg)
+- Upload ảnh toàn thân hoạt động với Supabase Storage
+- Validation đầy đủ (height: 100-250cm, weight: 30-250kg, file: jpg/jpeg/png, max 5MB)
+- Chỉ user đã login mới truy cập được (ProtectedRoute)
 - UI phản hồi khi save thành công/thất bại
+- Giao diện thống nhất giữa các trang đã đăng nhập
 
 ## Definition of Done
 - Code được review

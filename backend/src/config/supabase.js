@@ -25,3 +25,16 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     autoRefreshToken: false,
   },
 });
+
+// Supabase client với service role key cho storage operations
+// Vì project không dùng Supabase Auth, storage RLS policies (dùng auth.uid()) không hoạt động
+// Nên cần dùng service role key để bypass RLS, nhưng vẫn kiểm soát access ở application level
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+export const supabaseStorage = supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    })
+  : supabase; // Fallback to regular client if service key not provided
