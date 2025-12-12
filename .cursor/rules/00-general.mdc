@@ -9,7 +9,7 @@ alwaysApply: true
 README.md: project documentation.
 .gitignore: git ignore file.
 sprints/: user stories and sprint backlog (US-01.md, US-02.md, sprint1.md, PB.md).
-design/: database schema và thiết kế hệ thống (database-schema.md).
+design/: database schema và thiết kế hệ thống (database-schema.md, auth-profile-flow.md).
 migrations/: SQL migration scripts cho Supabase.
 backend/: Backend API (Node.js + Express).
   - src/: source code (controllers, services, repositories, middlewares, config, routes, utils).
