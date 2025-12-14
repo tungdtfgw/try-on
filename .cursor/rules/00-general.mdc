@@ -8,7 +8,7 @@ alwaysApply: true
   - commands/: automation commands.
 README.md: project documentation.
 .gitignore: git ignore file.
-sprints/: user stories and sprint backlog (US-01.md, US-02.md, sprint1.md, PB.md).
+sprints/: user stories and sprint backlog (US-01.md, US-02.md, US-03.md, US-04.md, sprint1.md, sprint2.md, PB.md).
 design/: database schema và thiết kế hệ thống (database-schema.md, auth-profile-flow.md).
 migrations/: SQL migration scripts cho Supabase.
 backend/: Backend API (Node.js + Express).
