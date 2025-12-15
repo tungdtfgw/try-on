@@ -124,7 +124,9 @@ export const loginUser = async (email, password) => {
   // Get user from profiles table
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
-    .select('id, email, password_hash, display_name, height_cm, weight_kg, body_photo_url, created_at, updated_at')
+    .select(
+      'id, email, password_hash, display_name, height_cm, weight_kg, body_photo_url, role, created_at, updated_at'
+    )
     .eq('email', normalizedEmail)
     .single();
 
@@ -144,6 +146,7 @@ export const loginUser = async (email, password) => {
   const tokenPayload = {
     sub: profile.id,
     email: profile.email,
+    role: profile.role || 'user',
   };
   const token = generateToken(tokenPayload);
 

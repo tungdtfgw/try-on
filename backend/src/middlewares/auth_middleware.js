@@ -34,3 +34,24 @@ export const authMiddleware = (req, res, next) => {
     next(error);
   }
 };
+
+export const isAdminMiddleware = (req, res, next) => {
+  try {
+    const user = req.user;
+
+    if (!user || user.role !== 'admin') {
+      return res.status(HTTP_STATUS.FORBIDDEN).json({
+        success: false,
+        error: {
+          code: ERROR_CODES.FORBIDDEN,
+          message: 'Admin role is required to access this resource',
+        },
+      });
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
