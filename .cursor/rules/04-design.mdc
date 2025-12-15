@@ -1,7 +1,11 @@
 ---
+description: Design rules, apply when design database, activity diagrams and all other kind of UML diagrams.
 alwaysApply: false
 ---
 # Database Design Rules
+
+- **Mermaid:** Use Mermaid for all kind of diagrams.
+- **Confirm:** At the first sentence of your response, always saying that you will follow the design rules and list the rules' names (Naming conventions, ...).
 
 ## 1. Naming Conventions
 - **Tables:** `snake_case`, plural: `profiles`, `products`, `orders`, `order_items`
@@ -81,7 +85,6 @@ alwaysApply: false
 - **Backward Compatibility:** When modifying existing schema, ensure backward compatibility. Use migrations to add columns, not remove (unless explicitly required).
 
 ## 3. Design Documentation
-- **Mermaid:** Use Mermaid for all diagrams.
 - **Sprint-Specific Design:** Store design documents (schema, flows) in /design folder and its sub folders (/design/database, /design/storage, /design/flows).
 - **Add or Edit Design Document:** Do not create new file by sprint name (e.g. schema_sprint1.md, schema_sprint2.md, ...). Instead, add schema.md or storage.md at sprint 1 and edit it over next sprints. Add flow design files by feature name with user stories as prefix (e.g. US-01-register.md, US-02-login.md, ...). For example, if you want to add a new feature for US-01, create a new file in /design/flows/US-01-feature-name.md.
 - **Review Integration:** Incorporate feedback from sprint reviews into design updates for next sprint.

@@ -8,12 +8,12 @@ User Stories: US-03, US-04
 **Mô tả:** Thiết kế schema cho categories và products
 
 **Công việc:**
-- [ ] Xác định bảng categories (id, name, slug, description, created_at, updated_at)
-- [ ] Xác định bảng products (id, name, price, category_id, description, created_at, updated_at)
-- [ ] Thiết lập foreign key, indexes và constraints
-- [ ] Viết script/migration SQL trên Supabase
-- [ ] Thiết kế storage bucket cho product images trên Supabase
-- [ ] Viết script/migration cho storage bucket
+- [x] Xác định bảng categories (id, name, slug, description, created_at, updated_at)
+- [x] Xác định bảng products (id, name, price, category_id, description, created_at, updated_at)
+- [x] Thiết lập foreign key, indexes và constraints
+- [x] Viết script/migration SQL trên Supabase
+- [x] Thiết kế storage bucket cho product images trên Supabase
+- [x] Viết script/migration cho storage bucket
 
 **Acceptance Criteria:**
 - Schema `categories` và `products` được tạo trên Supabase
@@ -28,11 +28,11 @@ User Stories: US-03, US-04
 **Mô tả:** Thêm role-based access control
 
 **Công việc:**
-- [ ] Thêm cột role vào bảng profiles (enum: 'user', 'admin')
-- [ ] Viết migration để thêm cột role
+- [x] Thêm cột role vào bảng profiles (enum: 'user', 'admin')
+- [x] Viết migration để thêm cột role
 - [ ] Tạo middleware kiểm tra role admin (isAdmin)
 - [ ] Update API để protect các endpoint admin
-- [ ] Tạo dữ liệu mẫu cho admin user
+- [x] Tạo dữ liệu mẫu cho admin user
 
 **Acceptance Criteria:**
 - Bảng profiles có cột role với default là 'user'
