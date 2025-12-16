@@ -1,105 +1,125 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { cn } from '../../utils/cn';
+import Button from '../ui/Button';
+import Container from '../ui/Container';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed w-full bg-white/80 backdrop-blur-md z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              TryOn
-            </Link>
-          </div>
+    <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm">
+      <Container>
+        <div className="flex h-[53px] items-center justify-between">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 font-black tracking-[0.12em] text-brand-black text-[19px]"
+          >
+            <svg className="w-[16.5px] h-[16.5px]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+            </svg>
+            <span>FASHION</span>
+          </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 items-center">
-            <Link to="/" className="text-gray-700 hover:text-purple-600 transition-colors font-medium">
-              Home
+          <nav className="hidden md:flex items-center gap-8">
+            <Link
+              to="/"
+              className="text-sm font-semibold uppercase tracking-nav text-brand-grayDark hover:text-brand-black transition-colors"
+            >
+              Catalogue
             </Link>
-            <a href="#features" className="text-gray-700 hover:text-purple-600 transition-colors font-medium">
-              Features
+            <a
+              href="#features"
+              className="text-sm font-semibold uppercase tracking-nav text-brand-grayDark hover:text-brand-black transition-colors"
+            >
+              Fashion
             </a>
-            <Link to="/about" className="text-gray-700 hover:text-purple-600 transition-colors font-medium">
-              About
+            <a
+              href="#favourite"
+              className="text-sm font-semibold uppercase tracking-nav text-brand-grayDark hover:text-brand-black transition-colors"
+            >
+              Favourite
+            </a>
+            <Link
+              to="/about"
+              className="text-sm font-semibold uppercase tracking-nav text-brand-grayDark hover:text-brand-black transition-colors"
+            >
+              Lifestyle
             </Link>
-            <div className="flex items-center space-x-4 ml-4">
-              <Link to="/login" className="text-gray-700 hover:text-purple-600 font-medium">
-                Log in
-              </Link>
-              <Link
-                to="/register"
-                className="bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800 transition-colors font-medium"
-              >
-                Sign up
+          </nav>
+
+          <div className="hidden md:flex items-center gap-3">
+            <Link to="/login">
+                <Button size="md" variant="primary">
+                  Sign up
+                </Button>
               </Link>
             </div>
-          </nav>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-gray-900 focus:outline-none"
+              className="text-brand-black focus:outline-none p-2"
+              aria-label="Toggle menu"
             >
-              <span className="sr-only">Open main menu</span>
               {!isMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               )}
             </button>
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden bg-white border-t border-black/5 shadow-md">
+          <Container className="py-4">
+            <nav className="flex flex-col space-y-1">
             <Link
               to="/"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50"
+                className="block rounded-sm px-4 py-3 text-base font-semibold uppercase tracking-nav text-brand-grayDark hover:bg-brand-grayLight hover:text-brand-black transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Home
+                Catalogue
             </Link>
             <a
               href="#features"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50"
+                className="block rounded-sm px-4 py-3 text-base font-semibold uppercase tracking-nav text-brand-grayDark hover:bg-brand-grayLight hover:text-brand-black transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Fashion
+              </a>
+              <a
+                href="#favourite"
+                className="block rounded-sm px-4 py-3 text-base font-semibold uppercase tracking-nav text-brand-grayDark hover:bg-brand-grayLight hover:text-brand-black transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Features
+                Favourite
             </a>
             <Link
               to="/about"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50"
+                className="block rounded-sm px-4 py-3 text-base font-semibold uppercase tracking-nav text-brand-grayDark hover:bg-brand-grayLight hover:text-brand-black transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              About
+                Lifestyle
             </Link>
-            <Link
-              to="/login"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Log in
-            </Link>
-            <Link
-              to="/register"
-              className="block px-3 py-2 rounded-md text-base font-medium text-purple-600 hover:bg-purple-50"
-              onClick={() => setIsMenuOpen(false)}
-            >
+              <div className="pt-3 px-4">
+                <Link to="/login" className="block" onClick={() => setIsMenuOpen(false)}>
+                  <Button size="md" variant="primary" className="w-full">
               Sign up
+                  </Button>
             </Link>
-          </div>
+              </div>
+            </nav>
+          </Container>
         </div>
       )}
     </header>

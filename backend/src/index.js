@@ -44,8 +44,12 @@ app.get('/health', (req, res) => {
 // API routes
 import authRoutes from './routes/auth_routes.js';
 import profileRoutes from './routes/profile_routes.js';
+import categoriesRoutes from './routes/categories_routes.js';
+import productsRoutes from './routes/products_routes.js';
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', profileRoutes);
+app.use('/api/v1/categories', categoriesRoutes);
+app.use('/api/v1/products', productsRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);

@@ -30,8 +30,8 @@ User Stories: US-03, US-04
 **Công việc:**
 - [x] Thêm cột role vào bảng profiles (enum: 'user', 'admin')
 - [x] Viết migration để thêm cột role
-- [ ] Tạo middleware kiểm tra role admin (isAdmin)
-- [ ] Update API để protect các endpoint admin
+- [x] Tạo middleware kiểm tra role admin (isAdmin)
+- [x] Update API để protect các endpoint admin
 - [x] Tạo dữ liệu mẫu cho admin user
 
 **Acceptance Criteria:**
@@ -46,17 +46,17 @@ User Stories: US-03, US-04
 **Mô tả:** Xây dựng CRUD API cho categories
 
 **Công việc:**
-- [ ] Tạo category repository (categories_repository.js)
-- [ ] Tạo category service (categories_service.js)
-- [ ] Tạo category controller (categories_controller.js)
-- [ ] Implement GET /api/categories (public - lấy tất cả danh mục)
-- [ ] Implement GET /api/categories/:id (public - lấy chi tiết 1 danh mục)
-- [ ] Implement POST /api/categories (admin only - tạo danh mục mới)
-- [ ] Implement PUT /api/categories/:id (admin only - cập nhật danh mục)
-- [ ] Implement DELETE /api/categories/:id (admin only - xóa danh mục)
-- [ ] Validation cho category data (name required, slug unique)
-- [ ] Auto-generate slug từ name
-- [ ] Error handling đầy đủ
+- [x] Tạo category repository (categories_repository.js)
+- [x] Tạo category service (categories_service.js)
+- [x] Tạo category controller (categories_controller.js)
+- [x] Implement GET /api/categories (public - lấy tất cả danh mục)
+- [x] Implement GET /api/categories/:id (public - lấy chi tiết 1 danh mục)
+- [x] Implement POST /api/categories (admin only - tạo danh mục mới)
+- [x] Implement PUT /api/categories/:id (admin only - cập nhật danh mục)
+- [x] Implement DELETE /api/categories/:id (admin only - xóa danh mục)
+- [x] Validation cho category data (name required, slug unique)
+- [x] Auto-generate slug từ name
+- [x] Error handling đầy đủ
 
 **Acceptance Criteria:**
 - CRUD operations hoạt động đúng
@@ -72,16 +72,16 @@ User Stories: US-03, US-04
 **Mô tả:** Xây dựng giao diện quản lý danh mục cho Admin
 
 **Công việc:**
-- [ ] Tạo CategoriesPage component (list tất cả categories)
-- [ ] Tạo CategoryForm component (form tạo/sửa category)
-- [ ] Tạo categories service (categories_service.js) trong frontend
-- [ ] Hiển thị danh sách categories dạng table/card
-- [ ] Form thêm category mới
-- [ ] Form sửa category (inline hoặc modal)
-- [ ] Nút xóa category với confirmation
-- [ ] Loading states và error handling
-- [ ] Success/error notifications
-- [ ] Responsive design
+- [x] Tạo CategoriesPage component (list tất cả categories)
+- [x] Tạo CategoryForm component (form tạo/sửa category)
+- [x] Tạo categories service (categories_service.js) trong frontend
+- [x] Hiển thị danh sách categories dạng table/card
+- [x] Form thêm category mới
+- [x] Form sửa category (inline hoặc modal)
+- [x] Nút xóa category với confirmation
+- [x] Loading states và error handling
+- [x] Success/error notifications
+- [x] Responsive design
 
 **Acceptance Criteria:**
 - Admin có thể xem danh sách categories
@@ -98,18 +98,18 @@ User Stories: US-03, US-04
 **Mô tả:** Xây dựng CRUD API cho products
 
 **Công việc:**
-- [ ] Tạo product repository (products_repository.js)
-- [ ] Tạo product service (products_service.js)
-- [ ] Tạo product controller (products_controller.js)
-- [ ] Implement GET /api/products (public - lấy tất cả hoặc filter by category)
-- [ ] Implement GET /api/products/:id (public - lấy chi tiết 1 sản phẩm)
-- [ ] Implement POST /api/products (admin only - tạo sản phẩm mới)
-- [ ] Implement PUT /api/products/:id (admin only - cập nhật sản phẩm)
-- [ ] Implement DELETE /api/products/:id (admin only - xóa sản phẩm)
-- [ ] Implement POST /api/products/:id/image (admin only - upload ảnh)
-- [ ] Validation cho product data
-- [ ] Pagination cho danh sách sản phẩm
-- [ ] Error handling đầy đủ
+- [x] Tạo product repository (products_repository.js)
+- [x] Tạo product service (products_service.js)
+- [x] Tạo product controller (products_controller.js)
+- [x] Implement GET /api/products (public - lấy tất cả hoặc filter by category)
+- [x] Implement GET /api/products/:id (public - lấy chi tiết 1 sản phẩm)
+- [x] Implement POST /api/products (admin only - tạo sản phẩm mới)
+- [x] Implement PUT /api/products/:id (admin only - cập nhật sản phẩm)
+- [x] Implement DELETE /api/products/:id (admin only - xóa sản phẩm)
+- [x] Implement POST /api/products/:id/image (admin only - upload ảnh)
+- [x] Validation cho product data
+- [x] Pagination cho danh sách sản phẩm
+- [x] Error handling đầy đủ
 
 **Acceptance Criteria:**
 - CRUD operations hoạt động đúng
@@ -127,19 +127,19 @@ User Stories: US-03, US-04
 **Mô tả:** Xây dựng giao diện quản lý sản phẩm cho Admin
 
 **Công việc:**
-- [ ] Tạo ProductsPage component (list tất cả products)
-- [ ] Tạo ProductForm component (form tạo/sửa product)
-- [ ] Tạo products service (products_service.js) trong frontend
-- [ ] Hiển thị danh sách products dạng table/grid với ảnh
-- [ ] Filter products by category
-- [ ] Form thêm product mới với upload ảnh
-- [ ] Form sửa product với thay đổi ảnh
-- [ ] Nút xóa product với confirmation
-- [ ] Preview ảnh trước khi upload
-- [ ] Loading states và error handling
-- [ ] Success/error notifications
-- [ ] Pagination UI
-- [ ] Responsive design
+- [x] Tạo ProductsPage component (list tất cả products)
+- [x] Tạo ProductForm component (form tạo/sửa product)
+- [x] Tạo products service (products_service.js) trong frontend
+- [x] Hiển thị danh sách products dạng table/grid với ảnh
+- [x] Filter products by category
+- [x] Form thêm product mới với upload ảnh
+- [x] Form sửa product với thay đổi ảnh
+- [x] Nút xóa product với confirmation
+- [x] Preview ảnh trước khi upload
+- [x] Loading states và error handling
+- [x] Success/error notifications
+- [x] Pagination UI
+- [x] Responsive design
 
 **Acceptance Criteria:**
 - Admin có thể xem danh sách products
@@ -159,12 +159,12 @@ User Stories: US-03, US-04
 **Mô tả:** Cập nhật navigation và tạo trang Admin Dashboard
 
 **Công việc:**
-- [ ] Cập nhật AuthenticatedHeader với menu Admin (nếu role=admin)
-- [ ] Tạo AdminDashboard component
-- [ ] Thêm routes cho /admin/categories và /admin/products
-- [ ] Protected routes cho admin pages (kiểm tra role)
-- [ ] Link navigation giữa các trang admin
-- [ ] Hiển thị thống kê tổng quan (số categories, products)
+- [x] Cập nhật AuthenticatedHeader với menu Admin (nếu role=admin)
+- [x] Tạo AdminDashboard component
+- [x] Thêm routes cho /admin/categories và /admin/products
+- [x] Protected routes cho admin pages (kiểm tra role)
+- [x] Link navigation giữa các trang admin
+- [x] Hiển thị thống kê tổng quan (số categories, products)
 
 **Acceptance Criteria:**
 - Admin menu hiển thị khi user có role=admin

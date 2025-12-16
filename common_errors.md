@@ -42,6 +42,31 @@ return (
 
 ## Backend Errors
 
+### Import/Export Module Mismatch
+**Error:** `SyntaxError: The requested module does not provide an export named 'xxx'`
+
+**Cause:** Import tên function không khớp với tên export trong file nguồn
+
+**Solution:**
+- Kiểm tra tên export trong file nguồn trước khi import
+- Đảm bảo tên import khớp chính xác với tên export
+
+**Example:**
+```javascript
+// ❌ Wrong - auth_middleware.js exports authMiddleware but imports authenticateToken
+import { authenticateToken, requireAdmin } from '../middlewares/auth_middleware.js';
+
+// ✅ Correct - match export names
+import { authMiddleware, isAdminMiddleware } from '../middlewares/auth_middleware.js';
+```
+
+**Prevention:**
+- Sử dụng IDE với auto-import feature
+- Kiểm tra file nguồn trước khi import
+- Chạy code ngay sau khi thêm import để phát hiện lỗi sớm
+
+---
+
 ### Supabase Storage: RLS Policies không hoạt động
 **Error:** Storage operations fail với authentication errors
 
@@ -84,6 +109,48 @@ export const supabaseStorage = supabaseServiceKey
 ---
 
 ## UI/UX Issues
+
+### Form không focus sau khi click Edit
+**Error:** Form hiển thị nhưng không scroll đến vị trí form, user phải scroll thủ công
+
+**Cause:** Không có scroll behavior khi show/hide form
+
+**Solution:**
+- Sử dụng `useRef` để reference form container
+- Gọi `scrollIntoView` với smooth behavior sau khi set showForm = true
+- Dùng setTimeout để đảm bảo DOM đã render
+
+**Example:**
+```javascript
+// ❌ Wrong - no scroll behavior
+const handleEdit = (item) => {
+  setEditingItem(item);
+  setShowForm(true);
+};
+
+// ✅ Correct - auto scroll to form
+const formRef = useRef(null);
+
+const handleEdit = (item) => {
+  setEditingItem(item);
+  setShowForm(true);
+  setTimeout(() => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+};
+
+// In JSX
+<div ref={formRef} className="form-container">
+  <Form ... />
+</div>
+```
+
+**Prevention:**
+- Test UX flow từ đầu đến cuối
+- Chú ý scroll position khi show/hide elements
+- Sử dụng smooth scroll cho better UX
+
+---
 
 ### Inconsistent Header Across Pages
 **Error:** Các trang đã đăng nhập có header khác nhau
@@ -133,6 +200,42 @@ const MyPage = () => {
 ---
 
 ## File Upload Issues
+
+### Supabase Storage: Mime type undefined error
+**Error:** `StorageApiError: mime type undefined is not supported`
+
+**Cause:** Truyền file object thay vì file buffer và mimetype riêng biệt cho Supabase Storage
+
+**Solution:**
+- Truyền `file.buffer` thay vì `file` object
+- Truyền `file.mimetype` riêng biệt vào contentType option
+- Đảm bảo multer đã parse file và có buffer available
+
+**Example:**
+```javascript
+// ❌ Wrong - passing file object
+const { data, error } = await supabaseStorage
+  .storage
+  .from('product-images')
+  .upload(filePath, file, {
+    contentType: file.mimetype  // mimetype is undefined
+  });
+
+// ✅ Correct - passing buffer and mimetype separately
+const { data, error } = await supabaseStorage
+  .storage
+  .from('product-images')
+  .upload(filePath, file.buffer, {
+    contentType: file.mimetype
+  });
+```
+
+**Prevention:**
+- Sử dụng multer.memoryStorage() để có file.buffer
+- Test upload ngay sau khi implement
+- Log file object để kiểm tra available properties
+
+---
 
 ### Multer Error: File size limit
 **Error:** `LIMIT_FILE_SIZE` error khi upload file

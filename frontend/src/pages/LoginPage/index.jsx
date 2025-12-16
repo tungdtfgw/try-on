@@ -4,9 +4,12 @@ import { z } from 'zod';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../../services/auth_service.js';
-import { cn } from '../../utils/cn.js';
+import Card from '../../components/ui/Card';
+import Container from '../../components/ui/Container';
+import Input from '../../components/ui/Input';
+import Button from '../../components/ui/Button';
+import Alert from '../../components/ui/Alert';
 
-// Validation schema
 const loginSchema = z.object({
   email: z.string().min(1, 'Email là bắt buộc').email('Email không hợp lệ'),
   password: z.string().min(1, 'Mật khẩu không được để trống'),
@@ -27,12 +30,9 @@ const LoginPage = () => {
   const mutation = useMutation({
     mutationFn: ({ email, password }) => login(email, password),
     onSuccess: (data) => {
-      // Lưu token vào localStorage
       if (data.data?.token) {
         localStorage.setItem('token', data.data.token);
       }
-
-      // Redirect đến dashboard hoặc trang được chỉ định
       const from = location.state?.from?.pathname || '/dashboard';
       navigate(from);
     },
@@ -46,84 +46,84 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Đăng nhập</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Chưa có tài khoản?{' '}
-            <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Đăng ký
-            </Link>
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-brand-cyanLight via-brand-grayLight to-brand-pinkLight flex items-center justify-center py-12 px-4 relative overflow-hidden">
+      {/* Decorative circles */}
+      <div className="absolute top-10 left-10 w-32 h-32 bg-brand-yellow/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 right-20 w-40 h-40 bg-brand-purple/20 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-brand-orange/20 rounded-full blur-2xl"></div>
+
+      <Container className="max-w-md w-full relative z-10">
+        <div className="text-center mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 font-black tracking-[0.12em] text-brand-black text-[19px] hover:text-brand-purple transition-colors"
+          >
+            <div className="p-2 bg-gradient-to-br from-brand-yellow to-brand-orange rounded-full">
+              <svg className="w-[16.5px] h-[16.5px] text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+              </svg>
+            </div>
+            <span>FASHION</span>
+          </Link>
         </div>
 
-        {location.state?.message && (
-          <div className="rounded-md bg-green-50 p-4">
-            <p className="text-sm text-green-800">{location.state.message}</p>
+        <Card className="p-8 bg-white/95 backdrop-blur-sm" elevated>
+          <h1 className="text-center text-3xl font-black tracking-heading text-brand-black uppercase">
+            Đăng nhập
+          </h1>
+          <p className="mt-3 text-center text-base text-brand-grayMedium">
+            Chưa có tài khoản?{' '}
+            <Link to="/register" className="font-semibold text-brand-black hover:underline">
+              Đăng ký ngay
+            </Link>
+          </p>
+
+          {location.state?.message ? (
+            <Alert className="mt-6" variant="success">
+              {location.state.message}
+            </Alert>
+          ) : null}
+
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              {...registerField('email')}
+              id="email"
+              type="email"
+              autoComplete="email"
+              label="Email"
+              placeholder="you@example.com"
+              error={errors.email?.message}
+            />
+
+            <Input
+              {...registerField('password')}
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              label="Mật khẩu"
+              placeholder="Nhập mật khẩu"
+              error={errors.password?.message}
+            />
+
+            {mutation.isError ? (
+              <Alert variant="error">
+                {mutation.error?.response?.data?.error?.message ||
+                  'Email hoặc mật khẩu không đúng'}
+              </Alert>
+            ) : null}
+
+            <Button type="submit" className="w-full mt-6" isLoading={mutation.isPending}>
+              Đăng nhập
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link to="/" className="text-sm text-brand-grayMedium hover:text-brand-black">
+              Quay lại trang chủ
+            </Link>
           </div>
-        )}
-
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email
-              </label>
-              <input
-                {...registerField('email')}
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className={cn(
-                  'appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
-                  errors.email ? 'border-red-300' : 'border-gray-300'
-                )}
-                placeholder="Email"
-              />
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Mật khẩu
-              </label>
-              <input
-                {...registerField('password')}
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                className={cn(
-                  'appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
-                  errors.password ? 'border-red-300' : 'border-gray-300'
-                )}
-                placeholder="Mật khẩu"
-              />
-              {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
-            </div>
-          </div>
-
-          {mutation.isError && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">
-                {mutation.error?.response?.data?.error?.message || 'Email hoặc mật khẩu không đúng'}
-              </p>
-            </div>
-          )}
-
-          <div>
-            <button
-              type="submit"
-              disabled={mutation.isPending}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {mutation.isPending ? 'Đang xử lý...' : 'Đăng nhập'}
-            </button>
-          </div>
-        </form>
-      </div>
+        </Card>
+      </Container>
     </div>
   );
 };

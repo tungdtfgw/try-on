@@ -4,8 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getProfile, updateProfile, uploadPhoto } from '../../services/profile_service.js';
-import { cn } from '../../utils/cn.js';
 import AuthenticatedHeader from '../../components/layout/AuthenticatedHeader';
+import Container from '../../components/ui/Container';
+import Card from '../../components/ui/Card';
+import Input from '../../components/ui/Input';
+import Button from '../../components/ui/Button';
+import Alert from '../../components/ui/Alert';
+import Spinner from '../../components/ui/Spinner';
 
 // Validation schema
 const profileSchema = z.object({
@@ -33,6 +38,7 @@ const profileSchema = z.object({
 const ProfilePage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
 
   // Fetch profile data
@@ -86,10 +92,15 @@ const ProfilePage = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
-      alert('Cập nhật hồ sơ thành công');
+      setNotification({ type: 'success', message: 'Cập nhật hồ sơ thành công' });
+      setTimeout(() => setNotification(null), 3000);
     },
     onError: (error) => {
-      alert(error?.response?.data?.error?.message || 'Cập nhật hồ sơ thất bại');
+      setNotification({
+        type: 'error',
+        message: error?.response?.data?.error?.message || 'Cập nhật hồ sơ thất bại',
+      });
+      setTimeout(() => setNotification(null), 3000);
     },
   });
 
@@ -100,10 +111,15 @@ const ProfilePage = () => {
       setPreviewUrl(url);
       setSelectedFile(null);
       queryClient.invalidateQueries({ queryKey: ['profile'] });
-      alert('Upload ảnh thành công');
+      setNotification({ type: 'success', message: 'Upload ảnh thành công' });
+      setTimeout(() => setNotification(null), 3000);
     },
     onError: (error) => {
-      alert(error?.response?.data?.error?.message || 'Upload ảnh thất bại');
+      setNotification({
+        type: 'error',
+        message: error?.response?.data?.error?.message || 'Upload ảnh thất bại',
+      });
+      setTimeout(() => setNotification(null), 3000);
     },
   });
 
@@ -114,13 +130,15 @@ const ProfilePage = () => {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
-      alert('Chỉ chấp nhận file jpg, jpeg hoặc png');
+      setNotification({ type: 'error', message: 'Chỉ chấp nhận file jpg, jpeg hoặc png' });
+      setTimeout(() => setNotification(null), 3000);
       return;
     }
 
     // Validate file size (5MB)
     if (file.size > 5242880) {
-      alert('Dung lượng file không được vượt quá 5MB');
+      setNotification({ type: 'error', message: 'Dung lượng file không được vượt quá 5MB' });
+      setTimeout(() => setNotification(null), 3000);
       return;
     }
 
@@ -136,7 +154,8 @@ const ProfilePage = () => {
 
   const handleFileUpload = () => {
     if (!selectedFile) {
-      alert('Vui lòng chọn ảnh');
+      setNotification({ type: 'error', message: 'Vui lòng chọn ảnh' });
+      setTimeout(() => setNotification(null), 3000);
       return;
     }
     uploadMutation.mutate(selectedFile);
@@ -148,10 +167,13 @@ const ProfilePage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-brand-grayLight">
         <AuthenticatedHeader />
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
-          <p className="text-gray-600">Đang tải...</p>
+          <div className="text-center">
+            <Spinner className="mx-auto" />
+            <p className="mt-4 text-sm text-brand-grayMedium">Đang tải...</p>
+          </div>
         </div>
       </div>
     );
@@ -159,168 +181,165 @@ const ProfilePage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-brand-grayLight">
         <AuthenticatedHeader />
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
-          <p className="text-red-600">Có lỗi xảy ra khi tải hồ sơ</p>
+          <Alert variant="error">Có lỗi xảy ra khi tải hồ sơ</Alert>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-grayLight">
       <AuthenticatedHeader />
-      <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Hồ sơ của tôi</h2>
+      <div className="py-xl mt-4">
+        <Container className="max-w-3xl">
+          <div className="mb-8">
+            <h1 className="text-section-heading font-black text-brand-black tracking-heading uppercase">
+              Hồ sơ của tôi
+            </h1>
+            <p className="mt-2 text-sm text-brand-grayMedium">
+              Quản lý thông tin cá nhân và ảnh toàn thân
+            </p>
+          </div>
+
+          <Card className="p-6 sm:p-8 bg-gradient-to-br from-white to-brand-grayLight/30 border-0 shadow-elevated">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-brand-purple to-brand-purpleLight flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg font-black text-brand-black">
+                  Thông tin tài khoản
+                </h2>
+                <p className="text-xs text-brand-grayMedium">
+                  Cập nhật thông tin của bạn
+                </p>
+              </div>
+            </div>
+
+            {notification ? (
+              <Alert
+                className="mt-6"
+                variant={notification.type === 'success' ? 'success' : 'error'}
+              >
+                {notification.message}
+              </Alert>
+            ) : null}
 
           {/* Email (read-only) */}
-          <div className="mb-6">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={profile?.email || ''}
-              disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600 cursor-not-allowed"
-            />
-            <p className="mt-1 text-xs text-gray-500">Email không thể thay đổi</p>
-          </div>
+            <div className="mt-6">
+              <Input
+                id="email"
+                type="email"
+                label="Email"
+                value={profile?.email || ''}
+                disabled
+                hint="Email không thể thay đổi"
+              />
+            </div>
 
           {/* Profile Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
             {/* Display Name */}
-            <div>
-              <label htmlFor="display_name" className="block text-sm font-medium text-gray-700 mb-2">
-                Tên hiển thị (tùy chọn)
-              </label>
-              <input
+              <Input
                 {...registerField('display_name')}
-                type="text"
                 id="display_name"
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-                  errors.display_name ? 'border-red-300' : 'border-gray-300'
-                )}
+                type="text"
+                label="Tên hiển thị (tùy chọn)"
                 placeholder="Nhập tên hiển thị"
+                error={errors.display_name?.message}
               />
-              {errors.display_name && (
-                <p className="mt-1 text-sm text-red-600">{errors.display_name.message}</p>
-              )}
-            </div>
 
             {/* Height */}
-            <div>
-              <label htmlFor="height_cm" className="block text-sm font-medium text-gray-700 mb-2">
-                Chiều cao (cm)
-              </label>
-              <input
+              <Input
                 {...registerField('height_cm')}
-                type="number"
                 id="height_cm"
+                type="number"
                 min="100"
                 max="250"
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-                  errors.height_cm ? 'border-red-300' : 'border-gray-300'
-                )}
+                label="Chiều cao (cm)"
                 placeholder="100-250"
+                error={errors.height_cm?.message}
               />
-              {errors.height_cm && (
-                <p className="mt-1 text-sm text-red-600">{errors.height_cm.message}</p>
-              )}
-            </div>
 
             {/* Weight */}
-            <div>
-              <label htmlFor="weight_kg" className="block text-sm font-medium text-gray-700 mb-2">
-                Cân nặng (kg)
-              </label>
-              <input
+              <Input
                 {...registerField('weight_kg')}
-                type="number"
                 id="weight_kg"
+                type="number"
                 min="30"
                 max="250"
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-                  errors.weight_kg ? 'border-red-300' : 'border-gray-300'
-                )}
+                label="Cân nặng (kg)"
                 placeholder="30-250"
+                error={errors.weight_kg?.message}
               />
-              {errors.weight_kg && (
-                <p className="mt-1 text-sm text-red-600">{errors.weight_kg.message}</p>
-              )}
-            </div>
 
             {/* Submit Button */}
-            <div>
-              <button
-                type="submit"
-                disabled={updateMutation.isPending}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {updateMutation.isPending ? 'Đang lưu...' : 'Lưu thông tin'}
-              </button>
-            </div>
-          </form>
+              <Button type="submit" className="w-full" isLoading={updateMutation.isPending}>
+                Lưu thông tin
+              </Button>
+            </form>
 
           {/* Photo Upload Section */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Ảnh toàn thân</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Upload ảnh chân dung toàn thân (jpg, jpeg, png, tối đa 5MB). Khuyến nghị tỷ lệ 3:4 hoặc 9:16.
-            </p>
+            <div className="mt-10 pt-8 border-t-2 border-brand-yellow/30">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-brand-cyan to-brand-cyanLight flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-lg font-black text-brand-black">Ảnh toàn thân</h2>
+                  <p className="text-xs text-brand-grayMedium">
+                    Upload ảnh chân dung toàn thân (jpg, jpeg, png, tối đa 5MB). Tỷ lệ 3:4 hoặc 9:16.
+              </p>
+                </div>
+              </div>
 
             {/* Preview */}
-            {previewUrl && (
-              <div className="mb-4">
-                <img
-                  src={previewUrl}
-                  alt="Body photo preview"
-                  className="max-w-xs max-h-96 object-contain rounded-md border border-gray-300"
-                />
-              </div>
-            )}
+              {previewUrl ? (
+                <div className="mt-4">
+                  <img
+                    src={previewUrl}
+                    alt="Body photo preview"
+                    className="max-w-xs max-h-96 object-contain rounded-md border-2 border-brand-yellow/50 bg-white shadow-card"
+                  />
+                </div>
+              ) : null}
 
             {/* File Input */}
-            <div className="flex items-center space-x-4">
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Chọn ảnh
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-              </label>
+              <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                <label htmlFor="file-upload" className="inline-flex">
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png"
+                    className="block w-full text-sm file:mr-4 file:rounded-sm file:border-0 file:bg-gradient-to-r file:from-brand-orange file:to-brand-orangeLight file:px-4 file:py-2 file:font-medium file:uppercase file:tracking-wide file:text-white hover:file:opacity-90 file:transition-all file:cursor-pointer"
+                    onChange={handleFileChange}
+                  />
+                </label>
 
-              {selectedFile && (
-                <button
-                  type="button"
-                  onClick={handleFileUpload}
-                  disabled={uploadMutation.isPending}
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {uploadMutation.isPending ? 'Đang upload...' : 'Upload ảnh'}
-                </button>
-              )}
+                {selectedFile ? (
+                  <Button
+                    type="button"
+                    onClick={handleFileUpload}
+                    isLoading={uploadMutation.isPending}
+                  >
+                    Upload ảnh
+                  </Button>
+                ) : null}
+              </div>
+
+              {selectedFile ? (
+                <p className="mt-2 text-sm text-brand-grayMedium">Đã chọn: {selectedFile.name}</p>
+              ) : null}
             </div>
-
-            {selectedFile && (
-              <p className="mt-2 text-sm text-gray-600">Đã chọn: {selectedFile.name}</p>
-            )}
-          </div>
-        </div>
-      </div>
+          </Card>
+        </Container>
       </div>
     </div>
   );

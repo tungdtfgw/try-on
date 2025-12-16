@@ -1,2 +1,59 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-yellow: #ebd96b;
+  --color-brand-yellowLight: #e5c643;
+  --color-brand-yellowDark: #e0c340;
+  --color-brand-grayLight: #f4f6f5;
+  --color-brand-grayMedium: #8e8e8e;
+  --color-brand-gray: #7f7f7f;
+  --color-brand-grayDark: #191818;
+  --color-brand-grayDarker: #242323;
+  --color-brand-black: #000000;
+  --color-brand-white: #ffffff;
+  
+  /* Vibrant colors from Figma */
+  --color-brand-beige: #d4b5a0;
+  --color-brand-beigeLight: #e8d5c4;
+  --color-brand-pink: #e8b4b8;
+  --color-brand-pinkLight: #f5d5d8;
+  --color-brand-orange: #ff8c42;
+  --color-brand-orangeLight: #ffb380;
+  --color-brand-purple: #9b7ebd;
+  --color-brand-purpleLight: #c5b3d9;
+  --color-brand-cyan: #a8d8e8;
+  --color-brand-cyanLight: #c8e6f0;
+  --color-brand-mint: #b8d4a8;
+  --color-brand-mintLight: #d4e8c8;
+  --color-brand-blue: #5b9bd5;
+  --color-brand-blueLight: #8fb9e0;
+
+  --font-family-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-family-secondary: "Roboto", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    /* Base colors for direct use */
+    --color-primary: #ebd96b;
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-gray-light: #f4f6f5;
+    --color-gray-medium: #8e8e8e;
+    --color-gray-dark: #191818;
+
+    --font-primary: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    --font-secondary: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  html {
+    font-family: var(--font-primary);
+  }
+
+  body {
+    color: var(--color-gray-dark);
+    background: var(--color-gray-light);
+    text-rendering: optimizeLegibility;
+  }
+}
+
