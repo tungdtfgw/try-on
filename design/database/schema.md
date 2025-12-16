@@ -1,7 +1,7 @@
 # Database Schema
 
 ## Overview
-Schema cho ứng dụng Virtual Try-On, bao gồm authentication, profile management, và quản lý kho hàng.
+Schema cho ứng dụng Virtual Try-On, bao gồm authentication, profile management, quản lý kho hàng, và phòng thử đồ ảo.
 
 ## Tables
 
@@ -85,6 +85,34 @@ Bảng lưu thông tin sản phẩm.
 
 ---
 
+### tryon_images
+Bảng lưu cache ảnh try-on đã sinh từ AI (kết hợp avatar user + ảnh sản phẩm).
+
+| Column      | Type        | Constraints                           | Description                              |
+|-------------|-------------|---------------------------------------|------------------------------------------|
+| id          | uuid        | PK, DEFAULT gen_random_uuid()         | Định danh ảnh try-on                     |
+| profile_id  | uuid        | NOT NULL, FK -> profiles.id           | User sở hữu ảnh try-on                   |
+| product_id  | uuid        | NOT NULL, FK -> products.id           | Sản phẩm trong ảnh try-on                |
+| image_url   | text        | NOT NULL                              | URL ảnh try-on (Supabase Storage)        |
+| created_at  | timestamptz | NOT NULL, DEFAULT now()               | Thời gian tạo                            |
+
+**Indexes:**
+- `tryon_images_pkey`: PRIMARY KEY on `id`
+- `idx_tryon_images_profile_id`: INDEX on `profile_id`
+- `idx_tryon_images_product_id`: INDEX on `product_id`
+- `tryon_images_profile_product_key`: UNIQUE on `(profile_id, product_id)`
+
+**Foreign Keys:**
+- `tryon_images_profile_id_fkey`: profile_id REFERENCES profiles(id) ON DELETE CASCADE
+- `tryon_images_product_id_fkey`: product_id REFERENCES products(id) ON DELETE CASCADE
+
+**Notes:**
+- Mỗi user chỉ lưu tối đa 5 ảnh try-on (kiểm soát ở backend, xóa ảnh cũ nhất khi vượt giới hạn).
+- Unique constraint `(profile_id, product_id)` đảm bảo không có duplicate cache.
+- ON DELETE CASCADE để tự động xóa ảnh try-on khi user hoặc product bị xóa.
+
+---
+
 ## Row Level Security (RLS)
 
 ### profiles
@@ -105,6 +133,12 @@ Bảng lưu thông tin sản phẩm.
 - `products_update_admin`: Chỉ admin được sửa (kiểm tra ở backend).
 - `products_delete_admin`: Chỉ admin được xóa (kiểm tra ở backend).
 
+### tryon_images
+- Bật RLS.
+- `tryon_images_select_own`: User chỉ xem ảnh try-on của chính mình.
+- `tryon_images_insert_own`: User chỉ tạo ảnh try-on cho chính mình (kiểm tra ở backend).
+- `tryon_images_delete_own`: User chỉ xóa ảnh try-on của chính mình (kiểm tra ở backend).
+
 ---
 
 ## Triggers
@@ -112,6 +146,7 @@ Bảng lưu thông tin sản phẩm.
 ### handle_updated_at
 - Function cập nhật `updated_at` trước khi UPDATE.
 - Áp dụng cho: `profiles`, `categories`, `products`.
+- Không áp dụng cho `tryon_images` (chỉ có created_at, không cần updated_at).
 
 ---
 
@@ -142,6 +177,23 @@ Bảng lưu thông tin sản phẩm.
 - `product_images_insert_admin`: Chỉ admin upload (kiểm tra ở backend với service role).
 - `product_images_update_admin`: Chỉ admin cập nhật (kiểm tra ở backend).
 - `product_images_delete_admin`: Chỉ admin xóa (kiểm tra ở backend).
+
+### Bucket: tryon-images
+- Mục đích: Lưu ảnh try-on đã sinh từ AI.
+- Access: Private (chỉ owner đọc được).
+- File types: jpg, jpeg, png.
+- Max size: 5MB.
+- Structure: `{profile_id}/{product_id}.{ext}`.
+
+**Policies:**
+- `tryon_images_select_own`: User chỉ xem ảnh try-on của chính mình.
+- `tryon_images_insert_own`: User chỉ upload vào folder của mình (kiểm tra ở backend).
+- `tryon_images_update_own`: User chỉ cập nhật ảnh của mình (kiểm tra ở backend).
+- `tryon_images_delete_own`: User chỉ xóa ảnh của mình (kiểm tra ở backend).
+
+**Notes:**
+- Backend sử dụng service role key để upload ảnh do AI sinh.
+- Mỗi user tối đa 5 ảnh, backend tự động cleanup ảnh cũ khi vượt giới hạn.
 
 ---
 
@@ -182,5 +234,15 @@ erDiagram
         timestamptz updated_at "NOT NULL, DEFAULT now()"
     }
 
+    TRYON_IMAGES {
+        uuid id PK "DEFAULT gen_random_uuid()"
+        uuid profile_id FK "NOT NULL"
+        uuid product_id FK "NOT NULL"
+        text image_url "NOT NULL"
+        timestamptz created_at "NOT NULL, DEFAULT now()"
+    }
+
     CATEGORIES ||--o{ PRODUCTS : "has many"
+    PROFILES ||--o{ TRYON_IMAGES : "has many"
+    PRODUCTS ||--o{ TRYON_IMAGES : "has many"
 ```
