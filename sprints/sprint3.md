@@ -25,21 +25,23 @@ User Stories: US-05, US-06
 
 ---
 
-### 2. Thiết kế Flow Phòng thử đồ (Priority: High)
+### 2. Thiết kế Flow Phòng thử đồ (Priority: High) ✅ COMPLETED
 **Mô tả:** Thiết kế luồng hoạt động chi tiết cho tính năng try-on
 
 **Công việc:**
-- [ ] Phác thảo flow chọn danh mục và hiển thị sản phẩm đầu tiên
-- [ ] Phác thảo flow sinh ảnh try-on với Google Gemini API
-- [ ] Phác thảo flow cache management (check cache, save cache, cleanup old images)
-- [ ] Phác thảo flow điều hướng Next/Prev với pre-generation
-- [ ] Phác thảo flow xử lý lỗi (no avatar, API error, rate limit)
-- [ ] Lưu activity diagrams vào thư mục /design/flows
+- [x] Phác thảo flow chọn danh mục và hiển thị sản phẩm đầu tiên
+- [x] Phác thảo flow sinh ảnh try-on với Google Gemini API
+- [x] Phác thảo flow cache management (check cache, save cache, cleanup old images)
+- [x] Phác thảo flow điều hướng Next/Prev với pre-generation
+- [x] Phác thảo flow xử lý lỗi (no avatar, API error, rate limit)
+- [x] Lưu activity diagrams vào thư mục /design/flows
+- [x] Chuyển đổi tất cả diagrams sang Mermaid format theo design rules
 
 **Acceptance Criteria:**
-- Có tài liệu flow rõ ràng cho tất cả các luồng chính
-- Activity diagrams được tạo và lưu trong /design/flows
-- Flow được review và chốt trước khi dev tính năng
+- [x] Có tài liệu flow rõ ràng cho tất cả các luồng chính
+- [x] Activity diagrams được tạo và lưu trong /design/flows (20 Mermaid diagrams)
+- [x] Flow được review và chốt trước khi dev tính năng
+- [x] Tất cả diagrams theo chuẩn Mermaid flowchart format
 
 ---
 
